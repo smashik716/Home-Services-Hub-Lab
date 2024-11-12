@@ -63,3 +63,42 @@ class Service(models.Model):
 
     def __str__(self):
         return self.service.user.first_name
+
+class Contact(models.Model):
+    status = models.ForeignKey(Status,on_delete=models.CASCADE,null=True)
+    name = models.CharField(max_length=100, null=True)
+    message1 = models.CharField(max_length=200, null=True)
+    email = models.EmailField(null=True)
+    def __str__(self):
+        return self.name
+
+class Total_Man(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.service.user.first_name
+
+class Order(models.Model):
+    report_status = models.CharField(max_length=100, null=True)
+    status = models.ForeignKey(Status,on_delete=models.CASCADE,null=True)
+    service = models.ForeignKey(Service_Man, on_delete=models.CASCADE, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+    book_date = models.DateField(null=True)
+    book_days = models.CharField(max_length=100, null=True)
+    book_hours = models.CharField(max_length=100, null=True)
+    def __str__(self):
+        return self.service.user.first_name+" "+self.customer.user.first_name
+
+
+class ServiceFeedback(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+    friendliness = models.CharField(max_length=100, null=True)
+    knowledge = models.CharField(max_length=100, null=True)
+    quickness = models.CharField(max_length=100, null=True)
+    infuture = models.CharField(max_length=30, null=True)
+    suggestion = models.CharField(max_length=300, null=True)
+    feedbackdate = models.DateField(null=True)
+
+    def __str__(self):
+        return self.id
+
