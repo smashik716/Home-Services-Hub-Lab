@@ -67,7 +67,6 @@ To configure the Home Services Hub Django project locally, we need to follow the
  Sheikh Muhammad Ashik , B.Sc in CSE at University of Asia Pacific - 21201118
  Tridip Barua Shuvro , B.Sc in CSE at University of Asia Pacific - 21201116
  Soma Das , B.Sc in CSE at University of Asia Pacific - 21201111
- Ritu Rani banik , B.Sc in CSE at University of Asia Pacific - 21201108
 ```
   
 
