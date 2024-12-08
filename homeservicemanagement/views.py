@@ -39,3 +39,6 @@ def Home(request):
         i.save()
     d = {'error': error, 'ser': ser}
     return render(request, 'home.html', d)
+
+
+
