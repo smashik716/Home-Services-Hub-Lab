@@ -347,3 +347,223 @@ def Edit_Profile(request):
     d = {'terror': terror, 'error': error, 'pro': sign, 'ser': ser}
     return render(request, 'edit_profile.html', d)
 
+def Edit_Service_Profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    ser = Service_Category.objects.all()
+    car = ID_Card.objects.all()
+    city = City.objects.all()
+    if request.method == 'POST':
+        f = request.POST['fname']
+        l = request.POST['lname']
+        u = request.POST['uname']
+        try:
+            i = request.FILES['image']
+            sign.image = i
+            sign.save()
+        except:
+            pass
+        try:
+            i1 = request.FILES['image1']
+            sign.id_card = i1
+            sign.save()
+        except:
+            pass
+        ad = request.POST['address']
+        e = request.POST['email']
+        con = request.POST['contact']
+        se = request.POST['service']
+        card = request.POST['card']
+        cit = request.POST['city']
+        ex = request.POST['exp']
+        dob = request.POST['dob']
+        if dob:
+            sign.dob = dob
+            sign.save()
+        ci = City.objects.get(city=cit)
+        sign.address = ad
+        sign.contact = con
+        sign.city = ci
+        user.first_name = f
+        user.last_name = l
+        user.email = e
+        sign.id_type = card
+        sign.experience = ex
+        sign.service_name = se
+        user.save()
+        sign.save()
+        terror = True
+    d = {'city': city, 'terror': terror, 'error': error, 'pro': sign, 'car': car, 'ser': ser}
+    return render(request, 'edit_service_profile.html', d)
+
+
+def Edit_Admin_Profile(request):
+    dic = notification()
+    error = False
+    user = User.objects.get(id=request.user.id)
+    pro = Customer.objects.get(user=user)
+    if request.method == 'POST':
+        f = request.POST['fname']
+        l = request.POST['lname']
+        u = request.POST['uname']
+        try:
+            i = request.FILES['image']
+            pro.image = i
+            pro.save()
+        except:
+            pass
+        ad = request.POST['address']
+        e = request.POST['email']
+        con = request.POST['contact']
+        pro.address = ad
+        pro.contact = con
+        user.first_name = f
+        user.last_name = l
+        user.email = e
+        user.save()
+        pro.save()
+        error = True
+    d = {'error': error, 'pro': pro, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'edit_admin_profile.html', d)
+
+
+def profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    d = {'pro': sign, 'error': error}
+    return render(request, 'profile.html', d)
+
+
+def service_profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    d = {'pro': sign, 'error': error}
+    return render(request, 'service_profile.html', d)
+def Edit_Service_Profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    ser = Service_Category.objects.all()
+    car = ID_Card.objects.all()
+    city = City.objects.all()
+    if request.method == 'POST':
+        f = request.POST['fname']
+        l = request.POST['lname']
+        u = request.POST['uname']
+        try:
+            i = request.FILES['image']
+            sign.image = i
+            sign.save()
+        except:
+            pass
+        try:
+            i1 = request.FILES['image1']
+            sign.id_card = i1
+            sign.save()
+        except:
+            pass
+        ad = request.POST['address']
+        e = request.POST['email']
+        con = request.POST['contact']
+        se = request.POST['service']
+        card = request.POST['card']
+        cit = request.POST['city']
+        ex = request.POST['exp']
+        dob = request.POST['dob']
+        if dob:
+            sign.dob = dob
+            sign.save()
+        ci = City.objects.get(city=cit)
+        sign.address = ad
+        sign.contact = con
+        sign.city = ci
+        user.first_name = f
+        user.last_name = l
+        user.email = e
+        sign.id_type = card
+        sign.experience = ex
+        sign.service_name = se
+        user.save()
+        sign.save()
+        terror = True
+    d = {'city': city, 'terror': terror, 'error': error, 'pro': sign, 'car': car, 'ser': ser}
+    return render(request, 'edit_service_profile.html', d)
+
+
+def Edit_Admin_Profile(request):
+    dic = notification()
+    error = False
+    user = User.objects.get(id=request.user.id)
+    pro = Customer.objects.get(user=user)
+    if request.method == 'POST':
+        f = request.POST['fname']
+        l = request.POST['lname']
+        u = request.POST['uname']
+        try:
+            i = request.FILES['image']
+            pro.image = i
+            pro.save()
+        except:
+            pass
+        ad = request.POST['address']
+        e = request.POST['email']
+        con = request.POST['contact']
+        pro.address = ad
+        pro.contact = con
+        user.first_name = f
+        user.last_name = l
+        user.email = e
+        user.save()
+        pro.save()
+        error = True
+    d = {'error': error, 'pro': pro, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'edit_admin_profile.html', d)
+
+
+def profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    d = {'pro': sign, 'error': error}
+    return render(request, 'profile.html', d)
+
+
+def service_profile(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        sign = Service_Man.objects.get(user=user)
+    terror = False
+    d = {'pro': sign, 'error': error}
+    return render(request, 'service_profile.html', d)
