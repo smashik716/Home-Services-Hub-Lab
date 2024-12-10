@@ -567,3 +567,12 @@ def service_profile(request):
     terror = False
     d = {'pro': sign, 'error': error}
     return render(request, 'service_profile.html', d)
+
+def admin_profile(request):
+    try:
+        customer = Customer.objects.get(user=request.user)  # Assuming you're using a user field in Customer model
+        # Your view logic for existing customer
+        return render(request, 'admin_profile.html', {'customer': customer})
+    except ObjectDoesNotExist:
+        # Handle the case where the customer does not exist
+        return redirect('some_other_url')
