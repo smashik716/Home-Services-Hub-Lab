@@ -661,3 +661,37 @@ def Add_City(request):
         error = True
     d = {'error': error, 'new': dic['new'], 'count': dic['count']}
     return render(request, 'add_city.html', d)
+
+def Edit_Service(request, pid):
+    dic = notification()
+    error = False
+    ser = Service_Category.objects.get(id=pid)
+    if request.method == "POST":
+        n = request.POST['cat']
+        try:
+            i = request.FILES['image']
+            ser.image = i
+            ser.save()
+        except:
+            pass
+        de = request.POST['desc']
+        ser.category = n
+        ser.desc = de
+        ser.save()
+        error = True
+    d = {'error': error, 'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'edit_service.html', d)
+
+
+def View_Service(request):
+    dic = notification()
+    ser = Service_Category.objects.all()
+    d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'view_service.html', d)
+
+
+def View_City(request):
+    dic = notification()
+    ser = City.objects.all()
+    d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'view_city.html', d)
