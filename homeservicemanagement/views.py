@@ -576,3 +576,58 @@ def admin_profile(request):
     except ObjectDoesNotExist:
         # Handle the case where the customer does not exist
         return redirect('some_other_url')
+
+def Change_Password(request):
+    user = User.objects.get(id=request.user.id)
+    error = ""
+    try:
+        sign = Customer.objects.get(user=user)
+        error = "pat"
+    except:
+        pass
+    terror = ""
+    if request.method == "POST":
+        n = request.POST['pwd1']
+        c = request.POST['pwd2']
+        o = request.POST['pwd3']
+        if c == n:
+            u = User.objects.get(username__exact=request.user.username)
+            u.set_password(n)
+            u.save()
+            terror = "yes"
+        else:
+            terror = "not"
+    d = {'error': error, 'terror': terror}
+    return render(request, 'change_password.html', d)
+
+
+def Admin_Change_Password(request):
+    terror = ""
+    if request.method == "POST":
+        n = request.POST['pwd1']
+        c = request.POST['pwd2']
+        o = request.POST['pwd3']
+        if c == n:
+            u = User.objects.get(username__exact=request.user.username)
+            u.set_password(n)
+            u.save()
+            terror = "yes"
+        else:
+            terror = "not"
+    d = {'terror': terror}
+    return render(request, 'admin_change_password.html', d)
+
+
+def New_Service_man(request):
+    dic = notification()
+    status = Status.objects.get(status="pending")
+    ser = Service_Man.objects.filter(status=status)
+    d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'new_service_man.html', d)
+
+
+def All_Service_man(request):
+    dic = notification()
+    ser = Service_Man.objects.all()
+    d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'all_service_man.html', d)
