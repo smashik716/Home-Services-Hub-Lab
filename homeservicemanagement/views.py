@@ -695,3 +695,24 @@ def View_City(request):
     ser = City.objects.all()
     d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
     return render(request, 'view_city.html', d)
+
+def accept_confirmation(request, pid):
+    ser = Order.objects.get(id=pid)
+    sta = Status.objects.get(status='Accept')
+    ser.status = sta
+    ser.save()
+    return redirect('service_order')
+
+
+def confirm_message(request, pid):
+    ser = Contact.objects.get(id=pid)
+    sta = Status.objects.get(status='read')
+    ser.status = sta
+    ser.save()
+    return redirect('new_message')
+
+
+def delete_service(request, pid):
+    ser = Service_Category.objects.get(id=pid)
+    ser.delete()
+    return redirect('view_service')
