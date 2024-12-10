@@ -631,3 +631,33 @@ def All_Service_man(request):
     ser = Service_Man.objects.all()
     d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
     return render(request, 'all_service_man.html', d)
+
+def All_Customer(request):
+    dic = notification()
+    ser = Customer.objects.all()
+    d = {'ser': ser, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'all_customer.html', d)
+
+
+def Add_Service(request):
+    dic = notification()
+    error = False
+    if request.method == "POST":
+        n = request.POST['cat']
+        i = request.FILES['image']
+        de = request.POST['desc']
+        Service_Category.objects.create(category=n, image=i, desc=de)
+        error = True
+    d = {'error': error, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'add_service.html', d)
+
+
+def Add_City(request):
+    dic = notification()
+    error = False
+    if request.method == "POST":
+        n = request.POST['cat']
+        City.objects.create(city=n)
+        error = True
+    d = {'error': error, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'add_city.html', d)
