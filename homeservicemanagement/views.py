@@ -716,3 +716,254 @@ def delete_service(request, pid):
     ser = Service_Category.objects.get(id=pid)
     ser.delete()
     return redirect('view_service')
+
+def delete_city(request, pid):
+    ser = City.objects.get(id=pid)
+    ser.delete()
+    return redirect('view_city')
+
+
+def delete_admin_order(request, pid):
+    ser = Order.objects.get(id=pid)
+    ser.delete()
+    return redirect('admin_order')
+
+
+def delete_Booking(request, pid):
+    ser = Order.objects.get(id=pid)
+    ser.delete()
+    return redirect('customer_order')
+
+
+def delete_service_man(request, pid):
+    ser = Service_Man.objects.get(id=pid)
+    ser.delete()
+    return redirect('all_service_man')
+
+
+def delete_customer(request, pid):
+    ser = Customer.objects.get(id=pid)
+    ser.delete()
+    return redirect('all_customer')
+
+
+def Change_status(request, pid):
+    dic = notification()
+    error = False
+    pro1 = Service_Man.objects.get(id=pid)
+    if request.method == "POST":
+        stat = request.POST['stat']
+        sta = Status.objects.get(status=stat)
+        pro1.status = sta
+        pro1.save()
+        error = True
+    d = {'pro': pro1, 'error': error, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'status.html', d)
+
+
+def Order_status(request, pid):
+    dic = notification()
+    error = False
+    pro1 = Order.objects.get(id=pid)
+    if request.method == "POST":
+        stat = request.POST['stat']
+        sta = Status.objects.get(status=stat)
+        pro1.status = sta
+        pro1.save()
+        error = True
+    d = {'pro': pro1, 'error': error, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'order_status.html', d)
+
+
+def Order_detail(request, pid):
+    dic = notification()
+    pro1 = Order.objects.get(id=pid)
+    d = {'pro': pro1, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'order_detail.html', d)
+
+
+def service_man_detail(request, pid):
+    dic = notification()
+    pro1 = Service_Man.objects.get(id=pid)
+    d = {'pro': pro1, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'service_man_detail.html', d)
+
+
+def search_cities(request):
+    error = ""
+    try:
+        user = User.objects.get(id=request.user.id)
+        error = ""
+        try:
+            sign = Customer.objects.get(user=user)
+            error = "pat"
+        except:
+            pass
+    except:
+        pass
+    dic = notification()
+    terror = False
+    pro = ""
+    car = City.objects.all()
+    count1 = 0
+    car1 = Service_Category.objects.all()
+    c = ""
+    c1 = ""
+    if request.method == "POST":
+        c = request.POST['city']
+        c1 = request.POST['cat']
+        ser = City.objects.get(city=c)
+        ser1 = Service_Category.objects.get(category=c1)
+        pro = Service_Man.objects.filter(service_name=ser1, city=ser)
+        for i in pro:
+            count1 += 1
+        terror = True
+    d = {'c': c, 'c1': c1, 'count1': count1, 'car1': car1, 'car': car, 'order': pro, 'new': dic['new'],
+         'count': dic['count'], 'error': error, 'terror': terror}
+    return render(request, 'search_cities.html', d)
+
+
+def search_services(request):
+    dic = notification()
+    error = False
+    pro = ""
+    car = Service_Category.objects.all()
+    c = ""
+    if request.method == "POST":
+        c = request.POST['cat']
+        ser = Service_Category.objects.get(category=c)
+        pro = Service_Man.objects.filter(service_name=ser)
+        error = True
+    d = {'service': c, 'car': car, 'order': pro, 'new': dic['new'], 'count': dic['count'], 'error': error}
+    return render(request, 'search_services.html', d)
+
+
+def new_message(request):
+    dic = notification()
+    sta = Status.objects.get(status='unread')
+    pro1 = Contact.objects.filter(status=sta)
+    d = {'ser': pro1, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'new_message.html', d)
+
+
+def read_message(request):
+    dic = notification()
+    sta = Status.objects.get(status='read')
+    pro1 = Contact.objects.filter(status=sta)
+    d = {'ser': pro1, 'new': dic['new'], 'count': dic['count']}
+    return render(request, 'read_message.html', d)
+
+
+def Search_Report(request):
+    dic = notification()
+    status = Status.objects.get(status="pending")
+    reg1 = Order.objects.filter(status=status)
+    total = 0
+    for i in reg1:
+        total += 1
+    data = Order.objects.all()
+    error = ""
+    terror = ""
+    reg = ""
+    if request.method == "POST":
+        terror = "found"
+        i = request.POST['date1']
+        n = request.POST['date2']
+        i1 = datetime.datetime.fromisoformat(i).month
+        i2 = datetime.datetime.fromisoformat(i).year
+        i3 = datetime.datetime.fromisoformat(i).day
+        n1 = datetime.datetime.fromisoformat(n).month
+        n2 = datetime.datetime.fromisoformat(n).year
+        n3 = datetime.datetime.fromisoformat(n).day
+        for j in data:
+            d1 = j.book_date.month
+            d2 = j.book_date.year
+            d3 = j.book_date.day
+            day3 = (d2 * 365) + (d1 * 30) + d3
+            day1 = (i2 * 365) + (i1 * 30) + i3
+            day2 = (n2 * 365) + (n1 * 30) + n3
+            if day3 > day1 and day3 < day2:
+                j.report_status = 'active'
+                j.save()
+            else:
+                j.report_status = 'inactive'
+                j.save()
+        reg = Order.objects.filter(report_status="active")
+        if not reg:
+            error = "notfound"
+    d = {'new': dic['new'], 'count': dic['count'], 'order': reg, 'error': error, 'terror': terror, 'reg1': reg1,
+         'total': total}
+    return render(request, 'search_report.html', d)
+
+
+def upload_notes(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    error = ""
+    user = request.user
+    serviceman = Service_Man.objects.get(user=user)
+    if request.method == "POST":
+        nf = request.FILES['notesfile']
+        try:
+            Notes.objects.create(serviceman=serviceman, notesfile=nf, uploaddate=datetime.date.today())
+            error = "no"
+        except:
+            error = "yes"
+    d = {'error': error}
+    return render(request, 'upload_notes.html', d)
+
+
+def manage_notes(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user = request.user
+    serviceman = Service_Man.objects.get(user=user)
+    notes = Notes.objects.filter(serviceman=serviceman)
+    d = {'notes': notes}
+    return render(request, 'manage_notes.html', d)
+
+
+def delete_notes(request, pid):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    notes = Notes.objects.get(id=pid)
+    notes.delete()
+    return redirect('manage_notes')
+
+
+def view_demonotes(request, pid):
+    serviceman = Service_Man.objects.get(id=pid)
+    notes = Notes.objects.filter(serviceman=serviceman)
+    d = {'notes': notes, 'serviceman': serviceman}
+    return render(request, 'view_demonotes.html', d)
+
+
+def sendservice_feedback(request, pid):
+    error = ""
+    order = Order.objects.get(id=pid)
+    if request.method == "POST":
+        f = request.POST['Friendliness']
+        k = request.POST['Knowledge']
+        q = request.POST['Quickness']
+        inf = request.POST['infuture']
+        s = request.POST['suggestion']
+        try:
+            ServiceFeedback.objects.create(order=order, friendliness=f, knowledge=k, quickness=q, infuture=inf,
+                                           suggestion=s, feedbackdate=datetime.date.today())
+            error = "no"
+        except:
+            error = "yes"
+    d = {'error': error}
+    return render(request, 'sendservice_feedback.html', d)
+
+
+def viewservice_feedback(request, pid):
+    feedback = ServiceFeedback.objects.get(order=pid)
+    d = {'feedback': feedback}
+    return render(request, 'viewservice_feedback.html', d)
+
+
+def viewmyfeedback(request, pid):
+    feedback = ServiceFeedback.objects.get(order=pid)
+    d = {'feedback': feedback}
+    return render(request, 'viewmyfeedback.html', d)
