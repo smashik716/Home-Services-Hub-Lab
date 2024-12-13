@@ -30,7 +30,7 @@ To configure the Home Services Hub Django project locally, we need to follow the
 2. Naviagte to the project ditectory
 
    ```
-    cd Home-Services-Hub-Final-Project-main
+    cd Home-Services-Hub-Lab
    ```
 3. Create virtual environment to isolate project dependencies
    ```
