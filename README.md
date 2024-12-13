@@ -25,7 +25,7 @@ To configure the Home Services Hub Django project locally, we need to follow the
 
 1. Clone the project repository from github:
    ```
-   git clone https://github.com/dev-smashik/Home-Services-Hub-Final-Project.git
+   git clone https://github.com/smashik716/Home-Services-Hub-Lab.git
    ```
 2. Naviagte to the project ditectory
 
