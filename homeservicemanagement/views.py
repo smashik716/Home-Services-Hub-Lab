@@ -905,7 +905,7 @@ def upload_notes(request):
     if request.method == "POST":
         nf = request.FILES['notesfile']
         try:
-            Notes.objects.create(serviceman=serviceman, notesfile=nf, uploaddate=datetime.date.today())
+            Notes.objects.create(serviceman=serviceman, notesfile=nf, uploaddate=datetime.date.today()) # type: ignore
             error = "no"
         except:
             error = "yes"
@@ -918,7 +918,7 @@ def manage_notes(request):
         return redirect('login')
     user = request.user
     serviceman = Service_Man.objects.get(user=user)
-    notes = Notes.objects.filter(serviceman=serviceman)
+    notes = Notes.objects.filter(serviceman=serviceman) # type: ignore
     d = {'notes': notes}
     return render(request, 'manage_notes.html', d)
 
@@ -926,14 +926,14 @@ def manage_notes(request):
 def delete_notes(request, pid):
     if not request.user.is_authenticated:
         return redirect('login')
-    notes = Notes.objects.get(id=pid)
+    notes = Notes.objects.get(id=pid) # type: ignore
     notes.delete()
     return redirect('manage_notes')
 
 
 def view_demonotes(request, pid):
     serviceman = Service_Man.objects.get(id=pid)
-    notes = Notes.objects.filter(serviceman=serviceman)
+    notes = Notes.objects.filter(serviceman=serviceman) # type: ignore
     d = {'notes': notes, 'serviceman': serviceman}
     return render(request, 'view_demonotes.html', d)
 
